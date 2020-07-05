@@ -21,9 +21,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "dependencies": {
-      "logkitty": ">=0.7.1"
     }
   }
 }
