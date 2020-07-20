@@ -3,6 +3,9 @@
     "name": "YourExplore",
     "slug": "YourExplore",
     "version": "1.0.0",
+    "facebookScheme": "fb2423196017973508",
+    "facebookAppId": "2423196017973508",
+    "facebookDisplayName": "Your Explore",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
