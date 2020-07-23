@@ -19,7 +19,8 @@ export default class App extends React.Component {
 const AppSwitchNavigator = createSwitchNavigator({
   LoadingScreen:LoadingScreen,
   LoginScreen:LoginScreen,
-  DashboardScreen:DashboardScreen
+  DashboardScreen:DashboardScreen,
+  ForgotPassword:ForgotPassword
 });
 
 const AppNavigator = createAppContainer
@@ -37,3 +38,5 @@ const styles = StyleSheet.create({
 import LoginScreen from './screens/LoginScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import DashboardScreen from './screens/DashboardScreen';
+import ForgotPassword from './screens/ForgotPassword';
+
