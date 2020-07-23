@@ -1,11 +1,14 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import React, { Component } from 'react';
 import { Container, Content, Header, Form, Input, Item, Label } from 'native-base';
 import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
 import * as firebase from 'firebase';
+import {goToForgotPassword} from './LoadingScreen';
 
 class LoginScreen extends Component {
+
+  
 
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
@@ -39,16 +42,16 @@ class LoginScreen extends Component {
           .signInAndRetrieveDataWithCredential(credential).then(function(result){
             console.log('user signed in ');
             if(result.additionalUserInfo.isNewUser){
-            firebase
-              .database()
-              .ref('/users/' + result.user.uid)
-              .set({
-                gmail: result.user.email,
-                profile_picture: result.additionalUserInfo.profile_picture,
-                locale: result.additionalUserInfo.profile.locale,
-                first_name: result.additionalUserInfo.profile.given_name,
-                last_name: result.additionalUserInfo.profile.family_name,
-                created_at: Date.now()
+              firebase
+                .database()
+                .ref('/users/' + result.user.uid)
+                .set({
+                  gmail: result.user.email,
+                  profile_picture: result.additionalUserInfo.profile_picture,
+                  locale: result.additionalUserInfo.profile.locale,
+                  first_name: result.additionalUserInfo.profile.given_name,
+                  last_name: result.additionalUserInfo.profile.family_name,
+                  created_at: Date.now()
               })
               .then(function(snapshot){
               });
@@ -56,6 +59,11 @@ class LoginScreen extends Component {
               firebase
               .database()
               .ref('/users/' + result.user.uid).update({
+                gmail: result.user.email,
+                profile_picture: result.additionalUserInfo.profile_picture,
+                locale: result.additionalUserInfo.profile.locale,
+                first_name: result.additionalUserInfo.profile.given_name,
+                last_name: result.additionalUserInfo.profile.family_name,
                 last_loggin_in: Date.now()
               });
 
@@ -109,28 +117,61 @@ class LoginScreen extends Component {
       }
 
       signUpUser = (email, password) => {
-        try{
-          firebase.auth().createUserWithEmailAndPassword(email, password)
+        if (email == ''){
+          alert('Please enter an email to sign up with')
+        }
+        else if (password.length < 6){
+          alert('Please enter a valid password')
+        }
+          firebase.auth().createUserWithEmailAndPassword(email, password).catch(error => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            if (errorCode === 'auth/email-already-in-use') {
+              alert('This email is already is already associated with an account. Please login or click "Forgot Password".');
+
+              // Your action
+              return;
+            }
+          })
+
 
         }
-        catch{error}(
-          alert('hi')
-        )
 
-      }
 
       loginInUser = (email, password) => {
-        try{
-          firebase.auth().signInWithEmailAndPassword(email, password).then(function(user){
-            console.log(user)
-          })
+        if (email == ''){
+          alert('Please enter the email associated with your account')
+          return;
         }
-        catch{error}(
-          console.log(error),
+        else if (password == ''){
+          alert('Please enter your password')
+          return;
+        }
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .catch(error => {
           alert('User account does not exist')
-        )
+        })
+
+ 
+        // try{
+        //   firebase.auth().signInWithEmailAndPassword(email, password);
+        // } 
+        // catch (error){
+        //   const errorCode = error.code;
+        //   const errorMessage = error.message;
+        //   alert(errorMessage);
+          // if(errorCode === 'There is no user record corresponding to this identifier. The user may have been deleted.'){
+          //   alert('User account does not exist');
+          //   return;
+          // }
+          //console.log(error.toString(error));
+          //alert('User account does not exist')
+        }
         
-      }
+      
+        
+
 
       async signInWithFacebook() {
         try {
@@ -149,8 +190,6 @@ class LoginScreen extends Component {
         }
       }
 
-
-       
 
     
   render() {
@@ -184,20 +223,20 @@ class LoginScreen extends Component {
                   />
                 </Item>
                 <Button 
-
+                  iconSize = {10}
                   title = 'Login'
                   onPress = {() => this.loginInUser(this.state.email.trim(), this.state.password)}
                   >
                 </Button>
                 <Button 
-                  full
-                  rounded
-                  primary
                   title = 'Sign Up'
                   onPress = {() => this.signUpUser(this.state.email.trim(), this.state.password)}
                   >
                 </Button>
               </Form>
+            <Button title = 'Forgot Password?' 
+            onPress = {() => this.props.navigation.navigate('ForgotPassword')}
+            />
             <Button title = 'Sign in with Google' 
             onPress = {() => this.signInWithGoogleAsync()}
             />

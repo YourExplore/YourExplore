@@ -5,9 +5,11 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 we have to import them from their respective modules
 StatusBar would be imported from 'expo-status-bar'
 React from 'react and etc. for others*/
+
 import LoginScreen from './screens/LoginScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import DashboardScreen from './screens/DashboardScreen';
+import ForgotPassword from './screens/ForgotPassword';
 
 import { render } from 'react-dom';
 
@@ -25,7 +27,8 @@ export default class App extends React.Component {
 const AppSwitchNavigator = createSwitchNavigator({
   LoadingScreen:LoadingScreen,
   LoginScreen:LoginScreen,
-  DashboardScreen:DashboardScreen
+  DashboardScreen:DashboardScreen,
+  ForgotPassword:ForgotPassword
 });
 
 const AppNavigator = createAppContainer
