@@ -6,8 +6,8 @@ class LoadingScreen extends Component {
 
   componentDidMount(){
     this.checkIfLoggedIn();    
-  }  
-
+  }
+  
   checkIfLoggedIn = () =>{
       firebase.auth().onAuthStateChanged(user => {
           if(user != null)

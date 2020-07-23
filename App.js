@@ -1,7 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+/*in order to use the Text, View, Image, etc. features
+we have to import them from their respective modules
+StatusBar would be imported from 'expo-status-bar'
+React from 'react and etc. for others*/
+
+import LoginScreen from './screens/LoginScreen';
+import LoadingScreen from './screens/LoadingScreen';
+import DashboardScreen from './screens/DashboardScreen';
+import ForgotPassword from './screens/ForgotPassword';
 
 import { render } from 'react-dom';
 
@@ -28,15 +36,9 @@ const AppNavigator = createAppContainer
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    flex: 1, //how much of the screen will be taken up
+    backgroundColor: '#ffff',
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
-
-import LoginScreen from './screens/LoginScreen';
-import LoadingScreen from './screens/LoadingScreen';
-import DashboardScreen from './screens/DashboardScreen';
-import ForgotPassword from './screens/ForgotPassword';
-
