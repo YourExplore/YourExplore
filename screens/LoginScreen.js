@@ -8,8 +8,6 @@ import {goToForgotPassword} from './LoadingScreen';
 
 class LoginScreen extends Component {
 
-  
-
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
       var providerData = firebaseUser.providerData;
@@ -39,7 +37,7 @@ class LoginScreen extends Component {
         // Sign in with credential from the Google user.
         firebase
           .auth()
-          .signInAndRetrieveDataWithCredential(credential).then(function(result){
+          .signInWithCredential(credential).then(function(result){
             console.log('user signed in ');
             if(result.additionalUserInfo.isNewUser){
               firebase
