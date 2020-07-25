@@ -173,22 +173,22 @@ class LoginScreen extends Component {
         
 
 
-      async signInWithFacebook() {
-        try {
-          await Facebook.initializeAsync('2423196017973508');
+      // async signInWithFacebook() {
+      //   try {
+      //     await Facebook.initializeAsync('2423196017973508');
 
-          const { type, token } = await Facebook.logInWithReadPermissionsAsync('2423196017973508', {
-            permissions: ['public_profile'],
-          });
-          if (type === 'success') {
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-            const credential = firebase.auth.FacebookAuthProvider.credential(token);
-            const facebookProfileData = await firebase.auth().signInWithCredential(credential);
-          }
-        } catch ({ message }) {
-          alert(`Facebook Login Error: ${message}`);
-        }
-      }
+      //     const { type, token } = await Facebook.logInWithReadPermissionsAsync('2423196017973508', {
+      //       permissions: ['public_profile'],
+      //     });
+      //     if (type === 'success') {
+      //       await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      //       const credential = firebase.auth.FacebookAuthProvider.credential(token);
+      //       const facebookProfileData = await firebase.auth().signInWithCredential(credential);
+      //     }
+      //   } catch ({ message }) {
+      //     alert(`Facebook Login Error: ${message}`);
+      //   }
+      // }
 
 
     
@@ -240,9 +240,9 @@ class LoginScreen extends Component {
             <Button title = 'Sign in with Google' 
             onPress = {() => this.signInWithGoogleAsync()}
             />
-            <Button title = 'Sign in with Facebook'
+            {/* <Button title = 'Sign in with Facebook'
             onPress = {() => this.signInWithFacebook()}
-            />
+            /> */}
         </Container>
         
     );
