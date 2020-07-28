@@ -1,19 +1,61 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Image } from 'react-native';
 import React, { Component, useState } from 'react';
 import firebase from 'firebase';
-import * as Location from 'expo-location';
-import * as Permission from 'expo-permissions'
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
 
 class DashboardScreen extends Component {
+  state = {
+    location: null,
+    errorMsg: null
+  };
+  findLoc = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const latitude = JSON.stringify(position.coords.latitude);
+        const longitude = JSON.stringify(position.coords.longitude);
+        this.setState({latitude, longitude});
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+  };
   
+  _isMounted = false;
+  findLocAsync = async () => {
+    let { status } = await Permissions.askAsync
+    (Permissions.LOCATION);
+    
+    if (status !== 'granted' && this._isMounted) {
+      this.setState({errorMsg: 'Permission to access location was denied'});
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    if (this._isMounted) {
+      this.setState({ location });
+    }
+  };
+  componentDidMount() {
+    this._isMounted = true;
+  };
+  componentWillUnmount() {
+    this._isMounted = false;
+  };
+
   render() {
+    this.findLocAsync()
       return (
         /*styles.<variable_name> means that the formatting is in the
         variable under the StyleSheet*/
         <View style={styles.container}>
-        <Text>DashboardScreen</Text>
-        <Button title = 'Sign out' 
-          onPress = {() => firebase.auth().signOut()} />
+          <View style = {styles.backgroundContainer}>
+            <Image
+              source = {require('./ocean.jpg')}
+              style = {styles.backgroundImage}
+            >
+            </Image> 
+          </View>
+          <Text>DashboardScreen</Text>
+          <Button title = 'Sign out' 
+            onPress = {() => firebase.auth().signOut()} />
         </View>
     );
   }
@@ -28,4 +70,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  },
+  backgroundContainer: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  }, 
 });

@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, ImageBackground, TextInput } from 'react-native';
 import React, { Component } from 'react';
 import { Container, Content, Header, Form, Input, Item, Label } from 'native-base';
+import { SocialIcon } from 'react-native-elements';
 import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
 import * as firebase from 'firebase';
 import {goToForgotPassword} from './LoadingScreen';
 
 class LoginScreen extends Component {
-
-  
 
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
@@ -39,7 +38,7 @@ class LoginScreen extends Component {
         // Sign in with credential from the Google user.
         firebase
           .auth()
-          .signInAndRetrieveDataWithCredential(credential).then(function(result){
+          .signInWithCredential(credential).then(function(result){
             console.log('user signed in ');
             if(result.additionalUserInfo.isNewUser){
               firebase
@@ -194,13 +193,25 @@ class LoginScreen extends Component {
     
   render() {
       return (
-        <Container style = {styles.container}>
-              <Form>
+        <View style = {styles.container}>
+          <View style = {styles.backgroundContainer}>
+          <Image
+            source = {require('./ocean.jpg')}
+            style = {styles.backgroundImage}
+            >
+            </Image> 
+            </View>
+            <View>
+            <Text style={styles.welcomeText}>
+              Welcome to YourExplore
+            </Text>
+             <Form>
                 <Item>
-                  <Label>Email</Label>
-                  <Input
+                  <Label style={styles.label}>Email</Label>
+                  <TextInput
                     style={styles.input}
                     placeholder="Email"
+                    color = '#000000'	
                     placeholderTextColor="#B1B1B1"
                     returnKeyType="next"
                     keyboardType="email-address"
@@ -210,10 +221,11 @@ class LoginScreen extends Component {
                   />
                 </Item>
                 <Item>
-                  <Label>Password</Label>
-                  <Input
+                  <Label style={styles.label} >Password</Label>
+                  <TextInput
                     style={styles.input}
                     placeholder="Password"
+                    color = '#000000'	
                     placeholderTextColor="#B1B1B1"
                     returnKeyType="done"
                     textContentType="newPassword"
@@ -223,27 +235,36 @@ class LoginScreen extends Component {
                   />
                 </Item>
                 <Button 
-                  iconSize = {10}
+                  color = '#000000'	
                   title = 'Login'
                   onPress = {() => this.loginInUser(this.state.email.trim(), this.state.password)}
                   >
                 </Button>
                 <Button 
                   title = 'Sign Up'
+                  color = '#000000'	
                   onPress = {() => this.signUpUser(this.state.email.trim(), this.state.password)}
                   >
                 </Button>
               </Form>
+              </View>
             <Button title = 'Forgot Password?' 
+            color = '#000000'	
             onPress = {() => this.props.navigation.navigate('ForgotPassword')}
             />
-            <Button title = 'Sign in with Google' 
+            <SocialIcon 
+            style = {styles.socialIconButton}
+            type = 'google'	
+            title = 'Sign in with Google'
+            button
+            //color = '#000000'	
             onPress = {() => this.signInWithGoogleAsync()}
             />
             {/* <Button title = 'Sign in with Facebook'
             onPress = {() => this.signInWithFacebook()}
             /> */}
-        </Container>
+        
+        </View>
         
     );
   }
@@ -253,8 +274,42 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 100,
+    alignItems: 'center',
     backgroundColor: '#fff',
     justifyContent: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  },
+  backgroundContainer: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  }, 
+  input: {
+    margin: 25,
+    height: 20,
+    width: 150,
+    color: '#000000',
+    fontSize: 16,
+  },
+  label:{
+    color: '#000000',
+    fontSize: 18,
+  },
+  welcomeText: {
+    textAlign: 'center',
+    fontSize: 50,
+    marginBottom: 95,
+    fontStyle: 'italic',
+  },
+  socialIconButton: {
+    width: 225
   },
 });
