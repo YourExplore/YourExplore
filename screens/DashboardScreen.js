@@ -14,19 +14,19 @@ class DashboardScreen extends Component {
       position => {
         const latitude = JSON.stringify(position.coords.latitude);
         const longitude = JSON.stringify(position.coords.longitude);
-        this.setState({latitude, longitude});
+        this.setState({ latitude, longitude });
       },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };
-  
+
   _isMounted = false;
   findLocAsync = async () => {
     let { status } = await Permissions.askAsync
-    (Permissions.LOCATION);
-    
+      (Permissions.LOCATION);
+
     if (status !== 'granted' && this._isMounted) {
-      this.setState({errorMsg: 'Permission to access location was denied'});
+      this.setState({ errorMsg: 'Permission to access location was denied' });
     }
     let location = await Location.getCurrentPositionAsync({});
     if (this._isMounted) {
@@ -35,6 +35,17 @@ class DashboardScreen extends Component {
   };
   componentDidMount() {
     this._isMounted = true;
+    console.log(firebase.auth().currentUser.uid);
+    //update user info to database
+    var user = firebase.auth().currentUser;
+    console.log("adding user to database");
+    firebase
+      .database()
+      .ref("/users/" + user.uid)
+      .set({
+        email: user.email,
+        last_loggin_in: Date.now(),
+      });
   };
   componentWillUnmount() {
     this._isMounted = false;
@@ -42,14 +53,14 @@ class DashboardScreen extends Component {
 
   render() {
     this.findLocAsync()
-      return (
-        /*styles.<variable_name> means that the formatting is in the
-        variable under the StyleSheet*/
-        <View style={styles.container}>
+    return (
+      /*styles.<variable_name> means that the formatting is in the
+      variable under the StyleSheet*/
+      <View style={styles.container}>
         <Text>DashboardScreen</Text>
-        <Button title = 'Sign out' 
-          onPress = {() => firebase.auth().signOut()} />
-        </View>
+        <Button title='Sign out'
+          onPress={() => firebase.auth().signOut()} />
+      </View>
     );
   }
 }
