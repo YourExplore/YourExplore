@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Image } from 'react-native';
 import React, { Component, useState } from 'react';
 import firebase from 'firebase';
 import * as Location from 'expo-location'
@@ -57,6 +57,13 @@ class DashboardScreen extends Component {
       /*styles.<variable_name> means that the formatting is in the
       variable under the StyleSheet*/
       <View style={styles.container}>
+        <View style={styles.backgroundContainer}>
+          <Image
+            source={require('./ocean.jpg')}
+            style={styles.backgroundImage}
+          >
+          </Image>
+        </View>
         <Text>DashboardScreen</Text>
         <Button title='Sign out'
           onPress={() => firebase.auth().signOut()} />
@@ -73,5 +80,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  },
+  backgroundContainer: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
   },
 });
