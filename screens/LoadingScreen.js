@@ -21,10 +21,6 @@ class LoadingScreen extends Component {
       });
   }; 
 
-  goToForgotPassword = () => {
-        
-    this.props.navigation.navigate('ForgotPassword')
-  }
 
     
   render() {

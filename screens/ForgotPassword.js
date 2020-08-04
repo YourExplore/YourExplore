@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TextInput } from 'react-native';
 import React, { Component } from 'react';
 import { Container, Content, Header, Form, Input, Item, Label } from 'native-base';
 import * as firebase from 'firebase';
@@ -31,14 +31,22 @@ class ForgotPassword extends Component {
 
     render() {
       return (
-        <Container style = {styles.container}>
+        <View style = {styles.container}>
+          <View style = {styles.backgroundContainer}>
+          <Image
+            source = {require('./ocean.jpg')}
+            style = {styles.backgroundImage}
+            >
+            </Image> 
+            </View>
+            <View>
         <Form>
           <Item>
-            <Label>Forgot Password?</Label>
-            <Input
+            <Label style={styles.label} >Forgot Password?</Label>
+            <TextInput
               style={styles.input}
-              placeholder="Enter Email"
-              placeholderTextColor="#B1B1B1"
+              placeholder="Enter Email Here "
+              placeholderTextColor="#000000"
               returnKeyType="next"
               keyboardType="email-address"
               textContentType="emailAddress"
@@ -46,16 +54,19 @@ class ForgotPassword extends Component {
               onChangeText={email => this.setState({ email })}            />
           </Item>
           <Button 
+            color = '#000000'
             iconSize = {10}
             title = 'Sent Password Reset'
             onPress = {() => this.handlePasswordReset(this.state.email.trim())}
             >
           </Button>
         </Form>
+        </View>
         <Button title = 'Go back' 
+          color = '#000000'
           onPress = {() => this.props.navigation.navigate('LoginScreen')}
         />
-      </Container>
+      </View>
       )
     }
   }
@@ -64,14 +75,38 @@ class ForgotPassword extends Component {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      flex: 100,
+      alignItems: 'center',
       backgroundColor: '#fff',
       justifyContent: 'center',
-      marginTop: 150
     },
     text: {
       color: '#333',
       fontSize: 24,
       marginLeft: 25
+    },
+    backgroundImage: {
+      flex: 1,
+      width: null,
+      height: null
+    },
+    backgroundContainer: {
+      flex: 1,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }, 
+    input: {
+      margin: 25,
+      height: 20,
+      width: 150,
+      color: '#000000',
+      fontSize: 17,
+    },
+    label:{
+      color: '#000000',
+      fontSize: 20,
     },
   });
